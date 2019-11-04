@@ -124,6 +124,12 @@ case letters."
   (convert-for-sql object))
 
 @export
+(defvar *timestring-format*
+  '((:year 4) #\- (:month 2) #\- (:day 2)
+    #\Space
+    (:hour 2) #\: (:min 2) #\: (:sec 2)))
+
+@export
 (defgeneric convert-for-sql (object)
   (:method ((object number))
     (make-sql-variable object))
@@ -159,9 +165,7 @@ case letters."
               (make-sql-variable
                (,(intern (string :format-timestring) :local-time)
                 nil object
-                :format '((:year 4) #\- (:month 2) #\- (:day 2)
-                          #\Space
-                          (:hour 2) #\: (:min 2) #\: (:sec 2))))))
+                :format *timestring-format*))))
           (convert-for-sql object))
         (make-sql-variable (princ-to-string object)))))
 
